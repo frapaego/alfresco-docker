@@ -1,59 +1,5 @@
 version: '2'
 services:
- xe_formula_41:
-    build: ./formula-xe
-    image: xe_formula_41
-    container_name: xe_formula_41
-    restart: "always"
-    ports:
-    - '18080:8080'
-    - '11521:1521'
-    environment:
-      - ORACLE_SCHEMA=FORMULA_41
-    volumes:
-      - '~/docker/volumes/ventanilla/formula/oracle_data/u01:/u01'
-    dns:
-     - 192.168.0.1
-    networks:
-     net_docker:
-      ipv4_address: 10.5.5.5
-  
- xe_plantilla_41:
-    build: ./plantilla-xe
-    image: xe_plantilla_41
-    container_name: xe_plantilla_41
-    restart: "always"
-    ports:
-    - '28080:8080'
-    - '21521:1521'
-    environment:
-      - ORACLE_SCHEMA=PLANTILLA_41
-    volumes:
-      - '~/docker/volumes/ventanilla/plantilla/oracle_data/u01:/u01'
-    dns:
-     - 192.168.0.1
-    networks:
-     net_docker:
-      ipv4_address: 10.5.5.4
-  
- xe_procesa_41:
-    build: ./procesa-xe
-    image: xe_procesa_41
-    container_name: xe_procesa_41
-    restart: "always"
-    ports:
-    - '38080:8080'
-    - '31521:1521'
-    environment:
-      - ORACLE_SCHEMA=PROCESA_41
-    volumes:
-      - '~/docker/volumes/ventanilla/procesa/oracle_data/u01:/u01'
-    dns:
-     - 192.168.0.1
-    networks:
-     net_docker:
-      ipv4_address: 10.5.5.3
-      
  mysql:
     image: mysql
     container_name: mysql
@@ -70,8 +16,6 @@ services:
       - MYSQL_VERSION=5.7.21-1debian9
     volumes:
       - '~/docker/volumes/ventanilla/mysql:/var/lib/mysql'
-    dns:
-     - 192.168.0.1
     networks:
      net_docker:
       ipv4_address: 10.5.5.7
@@ -98,109 +42,9 @@ services:
       - mysql
     links:
       - mysql
-    dns:
-     - 192.168.0.1
     networks:
      net_docker:
       ipv4_address: 10.5.5.8
-  
- jboss_componentes:
-    build: ./jboss_componentes
-    image: jboss_componentes
-    container_name: jboss_componentes
-    restart: "always"
-    ports:
-      - '48080:8080'
-      - '48787:8787'
-      - '49990:9990'
-      - '47426:7426'
-      - '47428:7428'
-      - '47427:7427'
-    environment:
-      - JAVA_HOME=/usr/java/default
-      - JBOSS_HOME=/opt/jboss
-      - JBOSS_IP=10.5.5.2
-      - ADMIN_USER=admin
-      - ADMIN_PASSWORD=jboss
-      - IP_FORMULA_EXT 127.0.0.1
-      - IP_FORMULA 10.5.5.2
-      - PROCESA_HOST_DB xe_procesa_41
-      - PROCESA_PORT_DB 1521
-      - PROCESA_SID_DB XE
-      - PROCESA_USER_DB PROCESA_41
-      - PROCESA_PASS_DB PROCESA_41
-      - FORMULA_HOST_DB xe_formula_41
-      - FORMULA_PORT_DB 1521
-      - FORMULA_SID_DB XE
-      - FORMULA_USER_DB FORMULA_41
-      - FORMULA_PASS_DB FORMULA_41
-      - PLANTILLA_HOST_DB xe_plantilla_41
-      - PLANTILLA_PORT_DB 1521
-      - PLANTILLA_SID_DB XE
-      - PLANTILLA_USER_DB PLANTILLA_41
-      - PLANTILLA_PASS_DB PLANTILLA_41
-      - JBOSS_MODULES_SYSTEM_PKGS org.jboss.byteman
-    volumes:
-      - '~/docker/volumes/ventanilla/jboss_componentes/log:/opt/jboss/standalone/log'
-      - '~/docker/volumes/ventanilla/jboss_componentes/deployments:/opt/jboss/standalone/deployments'
-    depends_on:
-      - xe_formula_41 
-      - xe_plantilla_41
-      - xe_procesa_41
-    links:
-      - xe_formula_41
-      - xe_plantilla_41
-      - xe_procesa_41
-    dns:
-    - 192.168.0.1 
-    networks:
-     net_docker:
-      ipv4_address: 10.5.5.2
-
- jboss_vea:
-    build: ./jboss_vea
-    image: jboss_vea
-    container_name: jboss_vea
-    restart: "always"
-    ports:
-      - '58080:8080'
-      - '58787:8787'
-      - '59990:9990'
-    environment:
-      - JAVA_HOME=/usr/java/default
-      - JBOSS_HOME=/opt/jboss
-      - JBOSS_IP=10.5.5.6
-      - ADMIN_USER=admin
-      - ADMIN_PASSWORD=jboss
-      - TREWA_HOST_DB 192.168.0.2
-      - TREWA_PORT_DB 1521
-      - TREWA_SID_DB fboxbd
-      - TREWA_USER_DB A0_TREWA
-      - TREWA_PASS_DB A0_TREWA
-      - VEA_HOST_DB 192.168.0.2
-      - VEA_PORT_DB 1521
-      - VEA_SID_DB fboxbd
-      - VEA_USER_DB VEA_OWNER2
-      - VEA_PASS_DB VEA_OWNER2
-    volumes:
-      - '~/docker/volumes/ventanilla/jboss_vea/log:/opt/jboss/standalone/log'
-      - '~/docker/volumes/ventanilla/jboss_vea/deployments:/opt/jboss/standalone/deployments'
-    depends_on:
-      - xe_formula_41 
-      - xe_plantilla_41
-      - xe_procesa_41
-      - jboss_componentes 
-      - alfresco 
-    links:
-      - xe_formula_41
-      - xe_plantilla_41
-      - xe_procesa_41
-      - jboss_componentes  
-    dns:
-    - 192.168.0.1 
-    networks:
-     net_docker:
-      ipv4_address: 10.5.5.6
 networks:
  net_docker:
   driver: bridge
