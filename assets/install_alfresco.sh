@@ -4,7 +4,7 @@ set -e
 # vars
 ALF_HOME=/alfresco
 ALF_BIN=alfresco-community-3.4.d-installer-linux-x64.bin
-ALF_URL=ftp://192.168.0.10:2021/alfresco_3.4d/$ALF_BIN
+ALF_URL=https://netix.dl.sourceforge.net/project/alfresco/Alfresco%203.4.d%20Community/$ALF_BIN
 
 DB_USERNAME=${DB_USERNAME:-alfresco}
 DB_PASSWORD=${DB_PASSWORD:-secret}
