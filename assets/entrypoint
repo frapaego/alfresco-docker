@@ -1,0 +1,14 @@
+#!bin/bash
+set -x
+
+/alfresco/init.sh &
+
+function alfresco_stop() {
+  /alfresco/tomcat/scripts/ctl.sh stop
+  rm -rf /alfresco/tomcat/temp/catalina.pid
+}
+
+trap alfresco_stop SIGHUP SIGINT SIGTERM SIGKILL
+/bin/bash -c 'while true; do sleep 6969; done' &
+child=$!
+wait "$child"
