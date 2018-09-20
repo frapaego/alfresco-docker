@@ -1,5 +1,5 @@
 FROM centos:centos7
-MAINTAINER Ralf Sippl <ralf.sippl@gmail.com>
+MAINTAINER Francisco José Páez Gordillo <frapaego@gmail.com>
 
 # install some necessary/desired RPMs and get updates
 RUN yum update -y
